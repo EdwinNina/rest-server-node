@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta name="google-signin-client_id" content="659167474740-7drgcf015404lhg2v35nhrbf0sqcnojt.apps.googleusercontent.com">
+   <title>Google Signin</title>
+</head>
+<body>
+   <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+   <div id="g_id_onload"
+      data-client_id="659167474740-7drgcf015404lhg2v35nhrbf0sqcnojt.apps.googleusercontent.com"
+      data-callback="onSignIn"
+      data-login_uri="http://localhost:8080"
+      data-auto_prompt="false">
+   </div>
+   <div class="g_id_signin" data-type="standard"></div>
+
+   <a href="#" onclick="signOut();">Sign out</a>
+
+   <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
+   <script>
+      function onSignIn(response) {
+         const responsePayload = jwt_decode(response.credential);
+
+         console.log("ID: " + responsePayload.sub);
+         console.log('Full Name: ' + responsePayload.name);
+         console.log('Given Name: ' + responsePayload.given_name);
+         console.log('Family Name: ' + responsePayload.family_name);
+         console.log("Image URL: " + responsePayload.picture);
+         console.log("Email: " + responsePayload.email);
+      }
+
+      function signOut() {
+         gapi.auth2.getAuthInstance().signOut()
+         .then(function () {
+            console.log('User signed out.');
+         });
+      }
+   </script>
+</body>
+</html>
